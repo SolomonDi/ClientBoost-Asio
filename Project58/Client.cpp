@@ -10,7 +10,9 @@ class Client {
 
 	boost::asio::io_context& io_contex;
 	tcp::socket socket;
+	std::string userName;
 	std::atomic<bool> done{ false };
+	
 
 	static constexpr uint16_t max_length = 1024;
 
@@ -18,7 +20,7 @@ class Client {
 
 public:
 
-	explicit Client(boost::asio::io_context& _io_contex, const std::string& host, uint16_t port) : io_contex(_io_contex), socket(io_contex) {
+	explicit Client(boost::asio::io_context& _io_contex, const std::string& host, uint16_t port, const std::string& _userName) : io_contex(_io_contex), socket(io_contex), userName(_userName){
 
 
 		try {
@@ -97,7 +99,7 @@ public:
 
 			try {
 
-				std::cout << '>';
+				std::cout << userName << '>';
 				std::cout << std::flush;
 
 
@@ -111,10 +113,10 @@ public:
 					break;
 				}
 
-				message += "\n";
+				std::string fullMessage = userName + ':' + message + '\n';
 
 				boost::system::error_code ec;
-				boost::asio::write(socket, boost::asio::buffer(message), ec);
+				boost::asio::write(socket, boost::asio::buffer(fullMessage), ec);
 
 				if (ec) {
 
@@ -152,7 +154,7 @@ int main(void) {
 
 		boost::asio::io_context contex;
 
-		Client client(contex, "127.0.0.1", 12345);
+		Client client(contex, "127.0.0.1", 12345, "Dmitiy");
 		client.start();
 	}
 	catch (std::exception& ex) {
