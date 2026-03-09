@@ -99,7 +99,7 @@ public:
 
 			try {
 
-				std::cout << userName << '>';
+				std::cout << userName <<  '>';
 				std::cout << std::flush;
 
 
