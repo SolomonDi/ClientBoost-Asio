@@ -148,13 +148,17 @@ public:
 
 int main(void) {
 
+	std::string clientName;
+
+	std::cout << "Enter a name: ";
+	std::getline(std::cin, clientName);
 
 	try {
 
 
 		boost::asio::io_context contex;
 
-		Client client(contex, "127.0.0.1", 12345, "Dmitiy");
+		Client client(contex, "127.0.0.1", 12345, clientName);
 		client.start();
 	}
 	catch (std::exception& ex) {
